@@ -1,0 +1,142 @@
+ <!DOCTYPE html>
+ <html>
+  <head>
+
+    <link rel="stylesheet" href="work.css">
+    
+
+    <title>Z CARSHOP</title>
+  </head>
+  <body>
+       
+       <h1>WELCOME TO Z's GARAGE</h1>
+       <h2>Car Garage and Car Spares.Customer service available 24 hrs </h2>
+        <div style="margin-top:100px;"><div style="display: inline-block;"><input id="car-name" type ="text"/></div> 
+          <div style="display:inline-block ;margin-left: 17px;"><input id="date-picker"style="" type="date"/></div>
+          <div style="display: inline-block;"><button onclick="addInquiry()"style="background-color:blue;">Inquire</button></div>
+          <div ><div id="car-list"></div></div></div>
+          <div style="display:inline-block ;margin-top:150px;margin-left: 700px;">
+            <div><p>Service for:</p></div> <P>wings</p>
+            <p> seats</p>
+            <p>lights</p>
+            <p>windscreen and rear screen</p>
+             <p>doors</p>
+             <p>dashboard</p>
+            </div>
+       <h3>Further assistance call: 0797823071 or Email us on lzadock0@gmail.com</h3>
+  <script>
+      let cars;  
+      
+      const savedInquiries = JSON.parse(localStorage.getItem('cars'));
+
+      if(Array.isArray(savedInquiries)){
+        cars = savedInquiries;
+      }else{
+        cars = [{
+        title:'Toyota',
+        dueDate: '2023-11-5',
+        id:'id1'
+      },
+       {
+        title:'Nissan',
+        dueDate : '2023-11-6',
+        id: "id2"
+
+        },
+
+        {
+          title: 'Chevrolet',
+          dueDate:'2023-11-7',
+          id: 'id3'
+        },
+        {
+
+          title: 'subaru',
+          dueDate: '2023-11-8',
+          id:'id4'
+        }
+      
+      ];
+      }
+
+      
+    
+      render(); 
+      
+  
+       
+       
+       
+        
+     
+        
+      function render(){
+        document.getElementById('car-list').innerHTML = ' ';
+
+        cars.forEach(function(car){
+        let element = document.createElement('div');
+        element.innerText = car.title + car.dueDate;
+        
+        const carList = document.getElementById("car-list");
+        carList.appendChild(element);
+        const cancelInquiry = document.createElement('button');
+        cancelInquiry.innerText = 'CANCEL';
+        cancelInquiry.style = 'margin:10px;','background-color: green;';
+        cancelInquiry.onclick = removeCar;
+        cancelInquiry.id = car.id;
+
+        element.appendChild(cancelInquiry);
+      });
+                  
+      }
+     
+      
+      
+     function addInquiry(){
+        const textbox = document.getElementById('car-name');
+        const title = textbox.value;
+        const datePicker = document.getElementById('date-picker');
+        const dueDate = datePicker.value;
+        textbox.value = "";
+        datePicker.value = "";
+        const id = new Date().getTime();
+
+        cars.push({
+          title: title,
+          dueDate: dueDate,
+          id: id
+          });
+          saveInquiries();
+          render();
+
+        }
+        
+
+        
+
+        function removeCar(event){
+          const cancelInquiry = event.target;
+          const idToCancel = cancelInquiry.id;
+                  
+          cars = cars.filter(function(car){
+            if (car.id == idToCancel){
+              return false;
+            }else{
+              return true;
+            }
+          });
+          saveInquiries();
+          render();
+        }           
+   
+        function saveInquiries(){
+          localStorage.setItem('cars', JSON.stringify(cars));
+        } 
+       
+        
+     
+  </script>
+  </body>
+ </html>
+   
+
